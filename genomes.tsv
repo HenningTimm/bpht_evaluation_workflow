@@ -1,0 +1,5 @@
+name	path
+hops	genomes/dummy.fasta
+hg38	genomes/dummy.fasta
+mxanthus	genomes/MyxococcusXanthus.fasta
+pfalciparum	genomes/PfE5.V1.fasta

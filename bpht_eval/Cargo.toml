@@ -1,0 +1,21 @@
+[package]
+name = "bpht_eval"
+version = "1.0.0"
+authors = ["Henning Timm <henning.timm@tu-dortmund.de>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mod_exp = "1.0.1"
+rand = "0.7.2"
+rand_distr = "0.2.2"
+color-backtrace = { version = "0.2" }
+itertools = "0.8.1"
+structopt = "0.3"
+serde = {version = "1.0.104", features = ["derive"]}
+bincode = "1.2.1"
+needletail = "^0.3.1"
+tab-hash = "0.3.0"
+# bpht = "1.0.0"
+bpht = { path = "../bpht", version = "1.0.0" }

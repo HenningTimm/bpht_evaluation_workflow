@@ -1,0 +1,108 @@
+# paths to genome files.
+# Human genome and hops genome are not included in this repository
+# Download them and replace the respective lines in genomes.tsv
+genomes: genomes.tsv
+
+# change this to a path to point local, fast memory wiuth lots of free space
+# for example an ssd
+tmp_path: tmp
+# path to the evaluation software
+bpht_eval_path: bpht_eval
+
+
+
+params:
+  H:
+    - 8
+    - 16
+  q:
+    - 13
+    - 15
+
+fill_rate:
+  p:
+    - 22
+    - 24
+    - 26
+    - 28
+    - 30
+    - 32
+  H:
+    - 8
+    - 10
+    - 12
+    - 14
+    - 16
+  runs:
+    10
+  steps:
+    20
+
+genomes_fill_time:
+  q:
+    - 11
+    - 15
+    - 16
+  H:
+    - 8
+    - 16
+    - 24
+  hfs:
+    - hlin
+    - mult
+    - tab_simple
+    - tab_twisted
+  runs:
+    10
+
+genomes_access_time:
+  q:
+    - 11
+    - 15
+    - 16
+  H:
+    - 8
+    - 16
+    - 24
+  hfs:
+    - hlin
+    - mult
+    - tab_simple
+    - tab_twisted
+  runs:
+    10
+
+comparison:
+  H:
+    - 8
+    - 12
+    - 16
+    - 20
+    - 24
+    - 28
+    - 32
+  p:
+    - 32
+    - 28
+    - 26
+    - 22
+  runs:
+    10
+
+  
+new_comparison:
+  H:
+    - 8
+    - 12
+    - 16
+    - 20
+    - 24
+    - 28
+    - 32
+  p:
+    - 32
+    - 28
+    - 26
+    - 22
+  runs:
+    10
