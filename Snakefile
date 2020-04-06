@@ -50,6 +50,6 @@ rule all:
         "plots/normal_access_time_comparison.pdf",
         "plots/counting_access_time_comparison.pdf",
         "plots/counting_speedup.pdf",
-        
+
 include: "rules/analysis.smk"
 include: "rules/plotting.smk"
