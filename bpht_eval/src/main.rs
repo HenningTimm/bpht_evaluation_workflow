@@ -1,4 +1,4 @@
-use bpht_eval::eval_compare_access_time::{compare_in_memory, evaluate_ht, prepare_indices};
+use bpht_eval::eval_compare_access_time::compare_in_memory;
 use bpht_eval::eval_compare_access_time_hard_collisions::compare_hard_collision_in_memory;
 use bpht_eval::eval_fill_rate::evaluate_fill_rate;
 use bpht_eval::eval_genome_access_time::{evaluate_genome_access_time, prepare_index};
