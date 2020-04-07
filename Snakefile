@@ -35,6 +35,7 @@ rule all:
                ),
         expand("results/genome_access_time/eval/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
                genome=["mxanthus", "pfalciparum"],
+               # genome=["mxanthus", "pfalciparum", "hops", "hg38"],
                H=config["genomes_access_time"]["H"],
                hf=config["genomes_access_time"]["hfs"],
                q=config["genomes_access_time"]["q"],
