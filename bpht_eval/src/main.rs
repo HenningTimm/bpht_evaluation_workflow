@@ -1,15 +1,14 @@
-use bpht_eval::eval_fill_rate::evaluate_fill_rate;
-use bpht_eval::eval_genome_fill_time::evaluate_genome_fill_time;
-use bpht_eval::eval_genome_access_time::{evaluate_genome_access_time, prepare_index};
-use bpht_eval::eval_compare_access_time::{prepare_indices, evaluate_ht, compare_in_memory};
+use bpht_eval::eval_compare_access_time::{compare_in_memory, evaluate_ht, prepare_indices};
 use bpht_eval::eval_compare_access_time_hard_collisions::compare_hard_collision_in_memory;
+use bpht_eval::eval_fill_rate::evaluate_fill_rate;
+use bpht_eval::eval_genome_access_time::{evaluate_genome_access_time, prepare_index};
+use bpht_eval::eval_genome_fill_time::evaluate_genome_fill_time;
 use structopt;
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "BPHT evaluation")]
 enum BPHTEval {
-
     EvalFillRate {
         /// Size of slots in the HT. As a power of 2
         #[structopt(short = "p", long = "ht-power", required = true)]
@@ -22,12 +21,11 @@ enum BPHTEval {
         /// nr of steps evaluated
         #[structopt(short = "s", long = "steps", required = true)]
         steps: usize,
-        
+
         /// Path to save the stats file
         #[structopt(short = "t", long = "stats", required = true)]
         stats_path: String,
     },
-
 
     GenomeFillTime {
         /// Input file
@@ -58,7 +56,6 @@ enum BPHTEval {
         #[structopt(short = "f", long = "hf-path", required = true)]
         hf_path: String,
     },
-
 
     PrepareQueryIndex {
         /// Input file
@@ -93,7 +90,6 @@ enum BPHTEval {
         #[structopt(long = "bpht-path", name = "bpht-path")]
         bpht_path: String,
     },
-    
 
     EvalQueryTime {
         /// Input file
@@ -107,7 +103,7 @@ enum BPHTEval {
         /// q-gram size
         #[structopt(long = "hf-path", required = true)]
         hf_path: String,
-        
+
         /// q-gram size
         #[structopt(short = "q", required = true)]
         q: usize,
@@ -116,7 +112,6 @@ enum BPHTEval {
         #[structopt(short = "t", long = "stats", required = true)]
         stats_path: String,
     },
-
 
     PrepareComparisonIndices {
         /// Size of slots in the HT. As a power of 2
@@ -133,7 +128,7 @@ enum BPHTEval {
 
         #[structopt(short = "k", long = "keys-path", required = true)]
         keys_path: String,
-        
+
         /// BPHT file
         #[structopt(long = "bpht-path", name = "bpht-path")]
         bpht_path: String,
@@ -185,7 +180,6 @@ enum BPHTEval {
         #[structopt(short = "t", long = "stats", required = true)]
         stats_path: String,
     },
-    
 }
 
 fn main() {
@@ -241,7 +235,7 @@ fn main() {
                 &bpht_path,
             );
         }
-        
+
         BPHTEval::EvalQueryTime {
             genome_path,
             bpht_path,
@@ -260,14 +254,7 @@ fn main() {
             bpht_path,
             plht_path,
         } => {
-            prepare_indices(
-                ht_pow,
-                h,
-                &stats_path,
-                &keys_path,
-                &bpht_path,
-                &plht_path,
-            );
+            prepare_indices(ht_pow, h, &stats_path, &keys_path, &bpht_path, &plht_path);
         }
 
         BPHTEval::AccessTimeComparison {
@@ -278,7 +265,7 @@ fn main() {
         } => {
             evaluate_ht(bpht_path, plht_path, &keys_path, &stats_path);
         }
-        
+
         BPHTEval::CompareInMemory {
             ht_pow,
             h,
@@ -294,6 +281,5 @@ fn main() {
         } => {
             compare_hard_collision_in_memory(ht_pow, h, &stats_path);
         }
-        
     }
 }

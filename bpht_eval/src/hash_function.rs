@@ -61,10 +61,7 @@ impl HlinParams {
     }
 
     pub fn with_params(a: u64, b: u64) -> Self {
-        HlinParams {
-            a,
-            b,
-        }
+        HlinParams { a, b }
     }
 }
 
@@ -229,8 +226,7 @@ mod tests {
             for key in keys {
                 // Test restoring the keys
                 let (address, fingerprint) = inv_mult_hash_32(key, multiplier, ht_size);
-                let restored_key =
-                    invert_mult_hash_32(address, fingerprint, ht_size, inv_const);
+                let restored_key = invert_mult_hash_32(address, fingerprint, ht_size, inv_const);
                 assert_eq!(key, restored_key);
             }
         }
@@ -302,8 +298,7 @@ mod tests {
             for key in keys {
                 // Test restoring the keys
                 let (address, fingerprint) = inv_mult_hash_32(key, multiplier, ht_size);
-                let _restored_key =
-                    invert_mult_hash_32(address, fingerprint, ht_size, inv_const);
+                let _restored_key = invert_mult_hash_32(address, fingerprint, ht_size, inv_const);
                 let fp_length = 32 - fingerprint.leading_zeros();
                 if fp_length > longest_fingerprint {
                     longest_fingerprint = fp_length;

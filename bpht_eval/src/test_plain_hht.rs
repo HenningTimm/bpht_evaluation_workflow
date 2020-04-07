@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
     use crate::plain_hht::PlainHHT;
+    use bpht::BPHT;
     use itertools::iproduct;
     use rand::seq::SliceRandom;
     use std::collections::HashSet;
     use std::iter::FromIterator;
-    use bpht::BPHT;
 
     /// Test implementing debug methods for a hopscotch HT
     trait HopscotchDebug {
@@ -16,7 +16,7 @@ mod tests {
         fn nonzero_entries(&self) -> usize;
         fn key_from_parts(&self, address: u32, remainder: u32) -> u32;
     }
-    
+
     impl HopscotchDebug for PlainHHT {
         fn count_total_hop_bits(&self) -> u32 {
             let mut total_hop_bits = 0;
@@ -42,7 +42,12 @@ mod tests {
                     }
                     (true, true) => (),
                     (true, false) => {
-                        println!("{:3}  {:>64b} {:>32b}\n[...]", i, entry, self.get_hop_bits(i));
+                        println!(
+                            "{:3}  {:>64b} {:>32b}\n[...]",
+                            i,
+                            entry,
+                            self.get_hop_bits(i)
+                        );
                         last_empty = true;
                     }
                 }
@@ -478,12 +483,10 @@ mod tests {
         assert_eq!(nr_evaluated, 88);
     }
 
-
     #[test]
     fn complete_saturation() {
         color_backtrace::install();
         let mut rng = rand::thread_rng();
-
 
         let mut nr_evaluated = 0;
         for (size_power, h) in iproduct!(5..16, 3..16) {
@@ -506,32 +509,37 @@ mod tests {
                     continue; // skip all invalid configurations
                 }
             };
-        
+
             let mut keys: Vec<u32> = (0..2_u32.pow(size_power))
-                .map(|x| x << (32-size_power))
+                .map(|x| x << (32 - size_power))
                 .collect();
             keys.shuffle(&mut rng);
 
-            
             for key in keys.iter() {
                 if let Ok(()) = ht.insert(*key, 42) {
                 } else {
                     // ht._print_ht_fw();
                     eprintln!("Crashed with fill rate: {}", ht.fill_rate());
-                    
+
                     ht.insert(*key, 42).unwrap();
                     panic!("Overflow")
                 };
             }
-            eprintln!("Expected fill rate: {}\nGot: {}", ht.fill_rate(), (initial_u as f64) / ((initial_u as u64 + h as u64 - 1) as f64));
-            assert_eq!(ht.fill_rate(), (initial_u as f64) / (initial_u as u64 + h as u64 - 1) as f64);
+            eprintln!(
+                "Expected fill rate: {}\nGot: {}",
+                ht.fill_rate(),
+                (initial_u as f64) / ((initial_u as u64 + h as u64 - 1) as f64)
+            );
+            assert_eq!(
+                ht.fill_rate(),
+                (initial_u as f64) / (initial_u as u64 + h as u64 - 1) as f64
+            );
         }
         // there are 88 valid parameter combinations that can be evaluated
         // for the parameters iproduct!(5..16, 3..16)
         // assert that they are all visited
         assert_eq!(nr_evaluated, 88);
     }
-
 
     #[test]
     fn insert_get_identity_plain_vs_bitpacked() {
@@ -543,7 +551,10 @@ mod tests {
         for (size_power, h) in iproduct!(5..16, 3..16) {
             let initial_u = 2_usize.pow(size_power);
 
-            let (mut bpht, mut plht) = match (BPHT::new(h, initial_u, true), PlainHHT::new(h, initial_u, true)) {
+            let (mut bpht, mut plht) = match (
+                BPHT::new(h, initial_u, true),
+                PlainHHT::new(h, initial_u, true),
+            ) {
                 (Ok(bpht), Ok(plht)) => {
                     eprintln!(
                         "\n\n\nParameter Set: u = 2^{}  h = {} is valid",

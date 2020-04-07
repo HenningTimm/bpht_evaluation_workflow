@@ -18,7 +18,7 @@
 //!   * Some(Some(g)) contains the valid q-gram g.
 
 use crate::hash_function;
-use crate::hash_function::{InvMultParams, HlinParams};
+use crate::hash_function::{HlinParams, InvMultParams};
 use bincode::{deserialize_from, serialize_into};
 use serde::{Deserialize, Serialize};
 use std::fs::File;
@@ -64,16 +64,12 @@ impl HashFunction {
     pub fn load(path: &str) -> HashFunction {
         let loaded_hf: HashFunction;
         {
-            let mut f =
-                BufReader::new(File::open(path).unwrap_or_else(|_| {
-                    panic!("Opening the saved hf {} did not work", path)
-                }));
-            loaded_hf = deserialize_from(&mut f).unwrap_or_else(|_| {
-                panic!(
-                    "Deserializing the hf file {} did not work",
-                    path
-                )
-            });
+            let mut f = BufReader::new(
+                File::open(path)
+                    .unwrap_or_else(|_| panic!("Opening the saved hf {} did not work", path)),
+            );
+            loaded_hf = deserialize_from(&mut f)
+                .unwrap_or_else(|_| panic!("Deserializing the hf file {} did not work", path));
         }
         loaded_hf
     }

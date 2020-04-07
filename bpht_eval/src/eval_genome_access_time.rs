@@ -1,17 +1,14 @@
-use crate::qgram_iterator::{Canonical, HashFunction};
-use crate::hash_function::{InvMultParams, HlinParams};
+use crate::hash_function::{HlinParams, InvMultParams};
 use crate::qgram_iterator;
+use crate::qgram_iterator::{Canonical, HashFunction};
 use bpht::BPHT;
+use needletail::parse_sequence_path;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufWriter;
-use tab_hash::{Tab32Simple,Tab32Twisted};
-use std::time::{Instant, Duration};
-use needletail::parse_sequence_path;
 use std::ops::Sub;
-
-
-
+use std::time::{Duration, Instant};
+use tab_hash::{Tab32Simple, Tab32Twisted};
 
 pub fn evaluate_genome_access_time(
     genome_path: &str,
@@ -20,7 +17,6 @@ pub fn evaluate_genome_access_time(
     q: usize,
     stats_path: &str,
 ) {
-
     eprintln!(
         "Querying index {} with {}-grams from genome {}. Results go to {}",
         bpht_path, genome_path, q, stats_path
@@ -34,23 +30,21 @@ pub fn evaluate_genome_access_time(
     let mut distinct_counted = 0_usize;
     let mut total_counted = 0_usize;
     let mut nr_stashed = 0_usize;
-    let mut results = vec![
-        format!(
-            "{},{},{},{},{},{},{},{},{},{},{}\n",
-            "size_power",
-            "h",
-            "q",
-            "hf",
-            "fill_rate",
-            "nr_qgrams",
-            "total_time (ns)",
-            "access_time (ns)",
-            "distinct_qgrams_counted",
-            "total_counted",
-            "nr_stashed",
-        )
-    ];
-    
+    let mut results = vec![format!(
+        "{},{},{},{},{},{},{},{},{},{},{}\n",
+        "size_power",
+        "h",
+        "q",
+        "hf",
+        "fill_rate",
+        "nr_qgrams",
+        "total_time (ns)",
+        "access_time (ns)",
+        "distinct_qgrams_counted",
+        "total_counted",
+        "nr_stashed",
+    )];
+
     let total_start = Instant::now();
     let mut chromosome_times = Vec::with_capacity(50);
     parse_sequence_path(
@@ -64,7 +58,8 @@ pub fn evaluate_genome_access_time(
                     canonical.clone(),
                     hash_function.clone(),
                     canonisize_qgrams,
-                ).collect();
+                )
+                .collect();
 
                 let chromosome_start = Instant::now();
                 for q_gram in q_grams {
@@ -103,31 +98,26 @@ pub fn evaluate_genome_access_time(
         HashFunction::Tab32Simple(_) => "tab_simple",
         HashFunction::Tab32Twisted(_) => "tab_twisted",
     };
-    
-    results.push(
-        format!(
-            "{},{},{},{},{},{},{},{},{},{},{}\n",
-            bpht.get_size(),
-            bpht.get_h(),
-            q,
-            hf,
-            bpht.fill_rate(),
-            nr_of_qgrams,
-            total_time.as_nanos(),
-            accumulated_insert_times.as_nanos(),
-            distinct_counted,
-            total_counted,
-            nr_stashed,
-        )
-    );
-    
+
+    results.push(format!(
+        "{},{},{},{},{},{},{},{},{},{},{}\n",
+        bpht.get_size(),
+        bpht.get_h(),
+        q,
+        hf,
+        bpht.fill_rate(),
+        nr_of_qgrams,
+        total_time.as_nanos(),
+        accumulated_insert_times.as_nanos(),
+        distinct_counted,
+        total_counted,
+        nr_stashed,
+    ));
+
     for result in results {
-        stats_file
-            .write_all(result.as_bytes())
-            .unwrap();
+        stats_file.write_all(result.as_bytes()).unwrap();
     }
 }
-
 
 pub fn prepare_index(
     genome_path: &str,
@@ -140,9 +130,24 @@ pub fn prepare_index(
     bpht_path: &str,
 ) {
     let ht_size = 2_usize.pow(size_power as u32);
-    eprintln!("Analyzing genome {} to build a BPHT of size {} using H={} containing {}-grams", genome_path, ht_size, h, q);
-    let mut results = vec![format!("{},{},{},{},{},{},{},{},{},{}\n", "size_power", "h", "q", "hf", "fill_rate", "nr_qgrams", "qgrams_stashed", "total_time", "fill_time", "init_time")];
-    
+    eprintln!(
+        "Analyzing genome {} to build a BPHT of size {} using H={} containing {}-grams",
+        genome_path, ht_size, h, q
+    );
+    let mut results = vec![format!(
+        "{},{},{},{},{},{},{},{},{},{}\n",
+        "size_power",
+        "h",
+        "q",
+        "hf",
+        "fill_rate",
+        "nr_qgrams",
+        "qgrams_stashed",
+        "total_time",
+        "fill_time",
+        "init_time"
+    )];
+
     let mut hash_function = match hf {
         "no" => HashFunction::No,
         "mult" => HashFunction::InvMult(InvMultParams::new()),
@@ -199,14 +204,22 @@ pub fn prepare_index(
         Err(e) => panic!("Could not open output file for distribution: {}", e),
     };
 
-    results.push(
-        format!("{},{},{},{},{},{},{},{},{},{}\n", size_power, h, q, hf, bpht.fill_rate(), nr_of_qgrams, qgrams_stashed, total_time.as_secs(), filling_time.as_secs(), init_time.as_secs())
-    );
+    results.push(format!(
+        "{},{},{},{},{},{},{},{},{},{}\n",
+        size_power,
+        h,
+        q,
+        hf,
+        bpht.fill_rate(),
+        nr_of_qgrams,
+        qgrams_stashed,
+        total_time.as_secs(),
+        filling_time.as_secs(),
+        init_time.as_secs()
+    ));
 
     for result in results {
-        stats_file
-            .write_all(result.as_bytes())
-            .unwrap();
+        stats_file.write_all(result.as_bytes()).unwrap();
     }
     hash_function.save(hf_path);
     bpht.save(bpht_path);

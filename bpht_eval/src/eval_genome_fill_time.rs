@@ -1,15 +1,15 @@
-use crate::qgram_iterator::{Canonical, HashFunction};
-use crate::hash_function::{InvMultParams, HlinParams};
+use crate::hash_function::{HlinParams, InvMultParams};
 use crate::qgram_iterator;
+use crate::qgram_iterator::{Canonical, HashFunction};
 use bpht::BPHT;
+use needletail::parse_sequence_path;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufWriter;
-use tab_hash::{Tab32Simple,Tab32Twisted};
-use std::time::Instant;
-use needletail::parse_sequence_path;
 use std::ops::Sub;
-    
+use std::time::Instant;
+use tab_hash::{Tab32Simple, Tab32Twisted};
+
 pub fn evaluate_genome_fill_time(
     genome_path: &str,
     size_power: usize,
@@ -21,9 +21,24 @@ pub fn evaluate_genome_fill_time(
     hf_path: &str,
 ) {
     let ht_size = 2_usize.pow(size_power as u32);
-    eprintln!("Analyzing genome {} to build a HHT of size {} using H={} containing {}-grams", genome_path, ht_size, h, q);
-    let mut results = vec![format!("{},{},{},{},{},{},{},{},{},{}\n", "size_power", "h", "q", "hf", "fill_rate", "nr_qgrams", "qgrams_stashed", "total_time", "fill_time", "init_time")];
-    
+    eprintln!(
+        "Analyzing genome {} to build a HHT of size {} using H={} containing {}-grams",
+        genome_path, ht_size, h, q
+    );
+    let mut results = vec![format!(
+        "{},{},{},{},{},{},{},{},{},{}\n",
+        "size_power",
+        "h",
+        "q",
+        "hf",
+        "fill_rate",
+        "nr_qgrams",
+        "qgrams_stashed",
+        "total_time",
+        "fill_time",
+        "init_time"
+    )];
+
     let mut hash_function = match hf {
         "no" => HashFunction::No,
         "mult" => HashFunction::InvMult(InvMultParams::new()),
@@ -80,14 +95,22 @@ pub fn evaluate_genome_fill_time(
         Err(e) => panic!("Could not open output file for distribution: {}", e),
     };
 
-    results.push(
-        format!("{},{},{},{},{},{},{},{},{},{}\n", size_power, h, q, hf, hht.fill_rate(), nr_of_qgrams, qgrams_stashed, total_time.as_secs(), filling_time.as_secs(), init_time.as_secs())
-    );
+    results.push(format!(
+        "{},{},{},{},{},{},{},{},{},{}\n",
+        size_power,
+        h,
+        q,
+        hf,
+        hht.fill_rate(),
+        nr_of_qgrams,
+        qgrams_stashed,
+        total_time.as_secs(),
+        filling_time.as_secs(),
+        init_time.as_secs()
+    ));
 
     for result in results {
-        stats_file
-            .write_all(result.as_bytes())
-            .unwrap();
+        stats_file.write_all(result.as_bytes()).unwrap();
     }
     hash_function.save(hf_path);
     // hht.save(out_path);

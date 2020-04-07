@@ -22,13 +22,12 @@
 //! ht[42] = 23
 //! ht[42] = 17
 //! should r [23, 17]?
-use bincode::{deserialize_from, serialize_into, serialized_size};
 use bincode;
+use bincode::{deserialize_from, serialize_into, serialized_size};
 
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::{BufReader, BufWriter};
-
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PlainHHT {
@@ -142,10 +141,10 @@ impl PlainHHT {
         serialize_into(&mut f, self).expect("Serialization of the index for saving did not work.");
     }
 
-    pub fn get_h(&self) -> usize{
+    pub fn get_h(&self) -> usize {
         self.h
     }
-    
+
     /// Compute the fingerprint length for a given size u
     fn fp_length_for(u: u32) -> usize {
         (2_u64.pow(32) as f64 / f64::from(u)).log2().floor() as usize
@@ -222,7 +221,8 @@ impl PlainHHT {
     /// Replace the hop bits of the address with the given hop_bits vector
     #[inline]
     fn replace_hop_bits(&mut self, address: usize, hop_bits: u64) {
-        self.hop_array[address] = (((self.hop_array[address] as u64) & (!self.hop_bits_mask)) | hop_bits) as u32;
+        self.hop_array[address] =
+            (((self.hop_array[address] as u64) & (!self.hop_bits_mask)) | hop_bits) as u32;
     }
 
     /// For a given hop bit vector, set a specific position to 0
@@ -253,17 +253,13 @@ impl PlainHHT {
 
     /// Change the value of an entry without changing the hop bits
     fn repack_value(&self, value: u32, fp: u32) -> u64 {
-        (u64::from(value) << 32)
-            | u64::from(fp) << self.fingerprint_shift
+        (u64::from(value) << 32) | u64::from(fp) << self.fingerprint_shift
     }
 
     /// unpack an entry into value, fingerprint, hop_bits
     #[inline]
     fn unpack(&self, entry: u64) -> (u32, u32) {
-        (
-            (entry >> 32) as u32,
-            (entry & self.fingerprint_mask) as u32,
-        )
+        ((entry >> 32) as u32, (entry & self.fingerprint_mask) as u32)
     }
 
     /// Extract a payload value from an entry by shifting
@@ -367,10 +363,9 @@ impl PlainHHT {
         }
     }
 
-
     // /// Shift entries towards the address within one neighbourhood
     // /// This should only be possible when deletions occurred.
-    // /// 
+    // ///
     // pub fn compact(&mut self, address: usize) -> Option<usize>{
     //     // get hop bit mask showing free (0) and filled (1) positions for the current slot
     //     let mut shifting_hop_bits = self.initialize_insert_hop_bits(address);
@@ -393,7 +388,7 @@ impl PlainHHT {
 
     //             let address_from = address + highest_occupied;
     //             // let address_to = address + target_offset;
-                
+
     //             let entry = self.table[address_from];
     //             let (value, fp, tmp_hop_bits) = self.unpack(entry);
 
@@ -410,12 +405,12 @@ impl PlainHHT {
     //             // TODO This changes the shifting hop bits etc.
     //             // reset them by calling self.initialize_insert_hop_bits(address);
     //             // again.
-                
+
     //             occupied_positions.retain(|x| x != &highest_occupied);
     //             occupied_positions.push(target_offset);
     //             highest_occupied = *occupied_positions.iter().max().unwrap();
 
-    //         } 
+    //         }
     //         // the current position is full
     //         // shift to look at a farther offset
     //         target_offset += 1;
@@ -429,7 +424,7 @@ impl PlainHHT {
     //         None
     //     }
     // }
-    
+
     /// Create a free address for insertion by shifting items to higher
     /// addresses in their respective pages.
     /// In other words: Try to shift an empty slot towards the target address
@@ -855,7 +850,7 @@ impl PlainHHT {
         // Get address and fingerprint
         let (address, query_fp) = self.split_key(key);
         let query_fp = u64::from(query_fp);
-        
+
         // identify positions with target address.
         // these can contain soft collisions with different
         // fingerprint
@@ -874,7 +869,6 @@ impl PlainHHT {
                 Some(value)
             }
         }
-
     }
 
     // /// Mybe call this replace?
@@ -890,7 +884,7 @@ impl PlainHHT {
     pub fn get(&self, key: u32) -> Option<Vec<u32>> {
         // Initialize output. At most h hits can be found.
         let mut hits = Vec::with_capacity(self.h);
-        
+
         // Get address and fingerprint
         let (address, query_fp) = self.split_key(key);
         // prefetch
