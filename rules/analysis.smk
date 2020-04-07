@@ -15,29 +15,6 @@ rule compile_bpht_eval:
         "cargo build --release --manifest-path {params.manifest_path} && "
         "cp {params.target_path} {output.bin}"
 
-rule create_index:
-    input:
-        bin=bin_name,
-        genome_path=lambda w: g[w.genome],
-    output:
-        index=f"{config['tmp_path']}/genome={{genome}}_s={{s}}_H={{H}}_q={{q}}.hht",
-        stats="results/index_creation/genome={genome}_s={s}_H={H}_q={q}.tsv",
-        hf="hfs/genome={genome}_s={s}_H={H}_q={q}.hf",
-    shell:
-        "./{input.bin} create-table {input.genome_path} -s {wildcards.s} -H {wildcards.H} -q {wildcards.q} "
-        "-o {output.index} -t {output.stats} -f {output.hf}"
-
-rule evaluate_index:
-    input:
-        bin=bin_name,
-        genome_path=lambda w: g[w.genome],
-        index=f"{config['tmp_path']}/genome={{genome}}_s={{s}}_H={{H}}_q={{q}}.hht",
-        hf="hfs/genome={genome}_s={s}_H={H}_q={q}.hf",
-    output:
-        tsv="results/genome={genome}_s={s}_H={H}_q={q}.tsv"
-    shell:
-        "./{input.bin} query-table {input.genome_path} {input.index} -q {wildcards.q} -o {output.tsv} -f {input.hf}"
-
 rule eval_fill_rate:
     input:
         bin=bin_name

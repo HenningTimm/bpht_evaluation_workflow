@@ -25,12 +25,6 @@ def rfr_valid_h_p_combinations():
 
 rule all:
     input:
-        expand("plots/{plot_type}/genome={genome}_s={s}.pdf",
-               plot_type=["fill_rate", "runtime"],
-               # genome=["mxanthus", "pfalciparum", "hops", "hg38"],
-               genome=["mxanthus", "pfalciparum"],
-               s=[2**30],
-               ),
         "plots/fill_rate_random/fill_rate_statistics.pdf",
         "plots/genome_fill_time/genome_fill_times.pdf",
         "plots/genome_fill_time/time_per_insert.pdf",

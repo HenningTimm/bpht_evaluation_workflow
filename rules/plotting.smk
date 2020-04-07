@@ -1,27 +1,5 @@
 all_h, all_p = zip(*rfr_valid_h_p_combinations())
 
-
-rule plot_all_genome_runs:
-    input:
-        index_tsv=expand(
-            "results/index_creation/genome={{genome}}_s={{s}}_H={H}_q={q}.tsv",
-            H=config["params"]["H"],
-            q=config["params"]["q"],
-            ),
-        eval_tsv=expand(
-            "results/genome={{genome}}_s={{s}}_H={H}_q={q}.tsv",
-            H=config["params"]["H"],
-            q=config["params"]["q"],
-            ),
-    output:
-        fill_rate_pdf="plots/fill_rate/genome={genome}_s={s}.pdf",
-        runtime_pdf="plots/runtime/genome={genome}_s={s}.pdf"
-    conda:
-        "../envs/plotting.yaml"
-    script:
-        "../scripts/plot_results.py"
-
-
 rule plot_random_fill_rate:
     input:
         stats=expand(
