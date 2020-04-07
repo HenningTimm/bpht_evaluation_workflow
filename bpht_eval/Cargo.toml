@@ -17,5 +17,4 @@ serde = {version = "1.0.104", features = ["derive"]}
 bincode = "1.2.1"
 needletail = "^0.3.1"
 tab-hash = "0.3.0"
-# bpht = "1.0.0"
-bpht = { path = "../bpht", version = "1.0.0" }
+bpht = "1.0.0"
