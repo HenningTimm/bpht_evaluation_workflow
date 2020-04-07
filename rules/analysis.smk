@@ -1,21 +1,23 @@
+bin_name = "eval_bpht"
+
 rule compile_bpht_eval:
     input:
         f"{config['bpht_eval_path']}/src/lib.rs",
         f"{config['bpht_eval_path']}/src/main.rs",
     output:
-        bin="bpht_eval",
+        bin=bin_name,
     conda:
         "../envs/rust.yaml"
     params:
-        target_path=f"{config['bpht_eval_path']}/target/release/bitpacked_hopscotch",
+        target_path=f"{config['bpht_eval_path']}/target/release/bpht_eval",
         manifest_path=f"{config['bpht_eval_path']}/Cargo.toml",
     shell:
-        "cargo build --release --manifest-path {params.manifest_path} &&"
+        "cargo build --release --manifest-path {params.manifest_path} && "
         "cp {params.target_path} {output.bin}"
 
 rule create_index:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
         genome_path=lambda w: g[w.genome],
     output:
         index=f"{config['tmp_path']}/genome={{genome}}_s={{s}}_H={{H}}_q={{q}}.hht",
@@ -27,7 +29,7 @@ rule create_index:
 
 rule evaluate_index:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
         genome_path=lambda w: g[w.genome],
         index=f"{config['tmp_path']}/genome={{genome}}_s={{s}}_H={{H}}_q={{q}}.hht",
         hf="hfs/genome={genome}_s={s}_H={H}_q={q}.hf",
@@ -38,7 +40,7 @@ rule evaluate_index:
 
 rule eval_fill_rate:
     input:
-        bin="bpht_eval"
+        bin=bin_name
     output:
         csv="results/random_fill_rate/p={p}_H={H}_run={run}.tsv",
     params:
@@ -48,7 +50,7 @@ rule eval_fill_rate:
 
 rule eval_fill_time_genome:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
         genome_path=lambda w: g[w.genome],
     output:
         stats="results/genome_fill_time/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
@@ -59,7 +61,7 @@ rule eval_fill_time_genome:
 
 rule prepare_bpht_access_time:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
         genome_path=lambda w: g[w.genome],
     output:
         stats="results/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
@@ -71,7 +73,7 @@ rule prepare_bpht_access_time:
 
 rule evaluate_bpht_access_time:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
         genome_path=lambda w: g[w.genome],
         hf="hfs/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.hf",
         bpht="hfs/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.bpht",
@@ -83,7 +85,7 @@ rule evaluate_bpht_access_time:
 
 rule compare_access_times_numa0:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
     output:
         stats="results/access_time_comparison/p={p}_H={H}_run={run}_numa=0.csv",
     resources:
@@ -93,7 +95,7 @@ rule compare_access_times_numa0:
 
 rule compare_access_times_numa1:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
     output:
         stats="results/access_time_comparison/p={p}_H={H}_run={run}_numa=1.csv",
     resources:
@@ -103,7 +105,7 @@ rule compare_access_times_numa1:
 
 rule new_compare_access_times_numa0:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
     output:
         stats="results/new_access_time_comparison/p={p}_H={H}_run={run}_numa=0.csv",
     resources:
@@ -113,7 +115,7 @@ rule new_compare_access_times_numa0:
 
 rule new_compare_access_times_numa1:
     input:
-        bin="bpht_eval",
+        bin=bin_name,
     output:
         stats="results/new_access_time_comparison/p={p}_H={H}_run={run}_numa=1.csv",
     resources:
