@@ -113,46 +113,6 @@ enum BPHTEval {
         stats_path: String,
     },
 
-    PrepareComparisonIndices {
-        /// Size of slots in the HT. As a power of 2
-        #[structopt(short = "p", long = "ht-power", required = true)]
-        ht_pow: usize,
-
-        /// H-parameter for hopscotch hashing
-        #[structopt(short = "H", long = "hop-positions", required = true)]
-        h: usize,
-
-        /// Path to save the stats file
-        #[structopt(short = "t", long = "stats", required = true)]
-        stats_path: String,
-
-        #[structopt(short = "k", long = "keys-path", required = true)]
-        keys_path: String,
-
-        /// BPHT file
-        #[structopt(long = "bpht-path", name = "bpht-path")]
-        bpht_path: String,
-
-        /// BPHT file
-        #[structopt(long = "plht-path", name = "plht-path")]
-        plht_path: String,
-    },
-
-    AccessTimeComparison {
-        #[structopt(long = "bpht-path", name = "bpht-path")]
-        bpht_path: Option<String>,
-
-        #[structopt(long = "plht-path", name = "plht-path")]
-        plht_path: Option<String>,
-
-        #[structopt(short = "k", long = "keys-path", required = true)]
-        keys_path: String,
-
-        /// Path to save the stats file
-        #[structopt(short = "t", long = "stats", required = true)]
-        stats_path: String,
-    },
-
     CompareInMemory {
         /// Size of slots in the HT. As a power of 2
         #[structopt(short = "p", long = "ht-power", required = true)]
@@ -244,26 +204,6 @@ fn main() {
             stats_path,
         } => {
             evaluate_genome_access_time(&genome_path, &bpht_path, &hf_path, q, &stats_path);
-        }
-
-        BPHTEval::PrepareComparisonIndices {
-            ht_pow,
-            h,
-            stats_path,
-            keys_path,
-            bpht_path,
-            plht_path,
-        } => {
-            prepare_indices(ht_pow, h, &stats_path, &keys_path, &bpht_path, &plht_path);
-        }
-
-        BPHTEval::AccessTimeComparison {
-            bpht_path,
-            plht_path,
-            keys_path,
-            stats_path,
-        } => {
-            evaluate_ht(bpht_path, plht_path, &keys_path, &stats_path);
         }
 
         BPHTEval::CompareInMemory {

@@ -1,3 +1,6 @@
+//! Evalutate the achievable fill rates of BPHTs by stepwise adding keys and
+//! observing how many need to be stashed.
+//! The target fill rates are ρ=0.1, ρ=0.2, ..., ρ=1.0.
 use rand;
 use rand::seq::IteratorRandom;
 

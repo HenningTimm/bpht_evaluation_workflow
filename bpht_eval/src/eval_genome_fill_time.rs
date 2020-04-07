@@ -1,3 +1,4 @@
+//! Create a BPHT for a genome using different hash functions.
 use crate::hash_function::{HlinParams, InvMultParams};
 use crate::qgram_iterator;
 use crate::qgram_iterator::{Canonical, HashFunction};
@@ -16,7 +17,6 @@ pub fn evaluate_genome_fill_time(
     h: usize,
     q: usize,
     hf: &str,
-    // out_path: &str,
     stats_path: &str,
     hf_path: &str,
 ) {
@@ -113,5 +113,4 @@ pub fn evaluate_genome_fill_time(
         stats_file.write_all(result.as_bytes()).unwrap();
     }
     hash_function.save(hf_path);
-    // hht.save(out_path);
 }

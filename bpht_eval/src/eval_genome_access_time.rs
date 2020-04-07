@@ -1,3 +1,4 @@
+//! Compare access times for BPHTs using reference genomes.
 use crate::hash_function::{HlinParams, InvMultParams};
 use crate::qgram_iterator;
 use crate::qgram_iterator::{Canonical, HashFunction};
@@ -10,6 +11,8 @@ use std::ops::Sub;
 use std::time::{Duration, Instant};
 use tab_hash::{Tab32Simple, Tab32Twisted};
 
+/// Load a BPHT from file, query it with q-grams from the genome and
+/// note the ttoal time required.
 pub fn evaluate_genome_access_time(
     genome_path: &str,
     bpht_path: &str,
@@ -119,6 +122,8 @@ pub fn evaluate_genome_access_time(
     }
 }
 
+/// Read in a genome, compute its q-grams, hash them and put them into a BPHT.
+/// SDave BPHT to file.
 pub fn prepare_index(
     genome_path: &str,
     size_power: usize,
