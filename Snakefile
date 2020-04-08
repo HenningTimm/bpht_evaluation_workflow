@@ -14,12 +14,12 @@ import pandas as pd
 import socket
 import itertools
 
-# configfile: "config.yaml"
+# Change this file to the server config when working on a suitably powerful machine
 configfile: "config_desktop.yaml"
+# Server config requires: Processors with two seperate NUMA blocks, about 2 TB of free disk space and 128GB of RAM
 # configfile: "config_server.yaml"
-report: "report/workflow.rst"
 
-genomes = pd.read_csv("genomes.tsv", sep="\t", dtype=str)
+genomes = pd.read_csv("genomes.tsv", sep="\t", comment="#", dtype=str)
 g = {name: path for name, path in zip(genomes["name"], genomes["path"])}
 
 def rfr_valid_h_p_combinations():

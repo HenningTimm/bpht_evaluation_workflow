@@ -1,5 +1,5 @@
 name	path
-hops	genomes/dummy.fasta
-hg38	genomes/dummy.fasta
+# hops	your_path_to_the_hops_genome_here
+# hg38	your_path_to_hg38_here
 mxanthus	genomes/MyxococcusXanthus.fasta
 pfalciparum	genomes/PfE5.V1.fasta
