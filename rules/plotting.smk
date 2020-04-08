@@ -19,21 +19,22 @@ rule plot_random_fill_rate:
         "../scripts/plot_fill_rate_random.py"
 
 
-rule plot_genome_fill_time:
-    input:
-        stats=expand(
-            "results/genome_fill_time/genome={{genome}}_H={H}_hf={hf}_q={q}_run={run}.csv",
-            H=config["genomes_fill_time"]["H"],
-            hf=config["genomes_fill_time"]["hfs"],
-            q=config["genomes_fill_time"]["q"],
-            run=range(config["genomes_fill_time"]["runs"]),
-            )
-    output:
-        fill_time_pdf="plots/genome_fill_time/runtime_genome={genome}.pdf"
-    conda:
-        "../envs/plotting.yaml"
-    script:
-        "../scripts/plot_genome_fill_time.py"
+# rule plot_genome_fill_time:
+#     input:
+#         stats=expand(
+#             "results/genome_fill_time/genome={{genome}}_H={H}_hf={hf}_q={q}_run={run}.csv",
+#             H=config["genomes_fill_time"]["H"],
+#             hf=config["genomes_fill_time"]["hfs"],
+#             q=config["genomes_fill_time"]["q"],
+#             run=range(config["genomes_fill_time"]["runs"]),
+#             )
+#     output:
+#         fill_time_pdf="plots/genome_fill_time/runtime_genome={genome}.pdf",
+#         time_per_insert="plots/genome_fill_time/time_per_insert.pdf"
+#     conda:
+#         "../envs/plotting.yaml"
+#     script:
+#         "../scripts/plot_genome_fill_time.py"
 
 
 rule plot_all_genome_fill_times:
