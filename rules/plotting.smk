@@ -19,24 +19,6 @@ rule plot_random_fill_rate:
         "../scripts/plot_fill_rate_random.py"
 
 
-# rule plot_genome_fill_time:
-#     input:
-#         stats=expand(
-#             "results/genome_fill_time/genome={{genome}}_H={H}_hf={hf}_q={q}_run={run}.csv",
-#             H=config["genomes_fill_time"]["H"],
-#             hf=config["genomes_fill_time"]["hfs"],
-#             q=config["genomes_fill_time"]["q"],
-#             run=range(config["genomes_fill_time"]["runs"]),
-#             )
-#     output:
-#         fill_time_pdf="plots/genome_fill_time/runtime_genome={genome}.pdf",
-#         time_per_insert="plots/genome_fill_time/time_per_insert.pdf"
-#     conda:
-#         "../envs/plotting.yaml"
-#     script:
-#         "../scripts/plot_genome_fill_time.py"
-
-
 rule plot_all_genome_fill_times:
     input:
         stats=expand(
@@ -54,25 +36,6 @@ rule plot_all_genome_fill_times:
         "../envs/plotting.yaml"
     script:
         "../scripts/plot_genome_fill_time.py"
-
-        
-rule plot_all_genome_access_times:
-    input:
-        stats=expand(
-            "results/genome_access_time/eval/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
-            genome=g.keys(),
-            H=config["genomes_fill_time"]["H"],
-            hf=config["genomes_fill_time"]["hfs"],
-            q=config["genomes_fill_time"]["q"],
-            run=range(config["genomes_fill_time"]["runs"]),
-            )
-    output:
-        time_per_access="plots/genome_access_time/time_per_access.pdf",
-    conda:
-        "../envs/plotting.yaml"
-    script:
-        "../scripts/plot_genome_access_time.py"
-
 
 
 def comparison_valid_h_p_combinations():
