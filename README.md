@@ -39,5 +39,8 @@ snakemake --use-conda --jobs 2 --resource numa_0=1 --resource numa_1=1
 Without specifying numa blocks, numa crossover due to high memory requirements can obfuscate the results.
 
 
+## References
+
 [1] https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.39
+
 [2] http://hopbase.cgrb.oregonstate.edu/content/Shinshuwase/hopbase.shinsuwase.fasta.gz
