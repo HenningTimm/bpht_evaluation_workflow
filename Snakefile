@@ -14,7 +14,9 @@ import pandas as pd
 import socket
 import itertools
 
-configfile: "config.yaml"
+# configfile: "config.yaml"
+configfile: "config_desktop.yaml"
+# configfile: "config_server.yaml"
 report: "report/workflow.rst"
 
 genomes = pd.read_csv("genomes.tsv", sep="\t", dtype=str)

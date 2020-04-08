@@ -24,9 +24,6 @@ fill_rate:
     - 22
     - 24
     - 26
-    # - 28
-    # - 30
-    # - 32
   H:
     - 8
     - 10
@@ -34,46 +31,34 @@ fill_rate:
     - 14
     - 16
   runs:
-    # 10
     2
   steps:
-    20
+    10
 
 genomes_fill_time:
   q:
     - 11
     - 15
-    - 16
   H:
     - 8
-    - 16
-    - 24
   hfs:
-    - hlin
     - mult
-    - tab_simple
     - tab_twisted
   runs:
-    # 10
-    2    
+    2
 
 genomes_access_time:
   q:
     - 11
     - 15
-    # - 16
   H:
     - 8
-    - 16
-    # - 24
   hfs:
-    - hlin
     - mult
-    # - tab_simple
     - tab_twisted
   runs:
-    # 10
     2
+
 
 comparison:
   H:
@@ -82,15 +67,10 @@ comparison:
     - 16
     - 20
     - 24
-    - 28
-    - 32
   p:
-    # - 32
-    # - 28
     - 26
     - 22
   runs:
-    # 10
     2
 
   
@@ -101,13 +81,8 @@ new_comparison:
     - 16
     - 20
     - 24
-    - 28
-    - 32
   p:
-    # - 32
-    # - 28
     - 26
     - 22
   runs:
-    # 10
     2
