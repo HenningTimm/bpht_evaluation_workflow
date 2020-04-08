@@ -82,7 +82,7 @@ def plot():
     custom_palette = sns.color_palette("GnBu", 5)
     sns.set_palette(custom_palette)
     g = sns.catplot(
-        hue="$\frak{a}$",
+        hue=r"$\frak{a}$",
         x="Hopscotch neighborhood",
         y="Speedup",
         data=speedup_df,
