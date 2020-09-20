@@ -1,5 +1,5 @@
-name	path
-# hops	your_path_to_the_hops_genome_here
-# hg38	your_path_to_hg38_here
-mxanthus	genomes/MyxococcusXanthus.fasta
-pfalciparum	genomes/PfE5.V1.fasta
+name	path	download_link
+hops	genomes/hops.fasta	hopbase.cgrb.oregonstate.edu/content/Shinshuwase/hopbase.shinsuwase.fasta.gz
+hg38	genomes/hg38.fasta	ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+mxanthus	genomes/MyxococcusXanthus.fasta	ftp://ftp.ensemblgenomes.org/pub/bacteria/release-39/fasta/bacteria_0_collection/myxococcus_xanthus_dk_1622/dna/Myxococcus_xanthus_dk_1622.ASM1268v1.dna.toplevel.fa.gz
+pfalciparum	genomes/PfE5.V1.fasta	ftp://ftp.sanger.ac.uk/pub/project/pathogens/Plasmodium/falciparum/E5/Version1/PfE5.V1.fasta.gz

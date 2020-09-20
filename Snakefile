@@ -20,7 +20,8 @@ configfile: "config_desktop.yaml"
 # configfile: "config_server.yaml"
 
 genomes = pd.read_csv("genomes.tsv", sep="\t", comment="#", dtype=str)
-g = {name: path for name, path in zip(genomes["name"], genomes["path"])}
+g = {name: {"path": path, "download_link": download_link} for name, path, download_link in zip(genomes["name"], genomes["path"], genomes["download_link"])}
+print(g)
 
 def rfr_valid_h_p_combinations():
     return [(h, p) for h, p in itertools.product(config["fill_rate"]["H"], config["fill_rate"]["p"]) if h <= p]
@@ -36,3 +37,4 @@ rule all:
 
 include: "rules/analysis.smk"
 include: "rules/plotting.smk"
+include: "rules/files.smk"

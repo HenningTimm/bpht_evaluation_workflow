@@ -28,7 +28,7 @@ rule eval_fill_rate:
 rule eval_fill_time_genome:
     input:
         bin=bin_name,
-        genome_path=lambda w: g[w.genome],
+        genome_path=lambda w: g[w.genome]["path"],
     output:
         stats="results/genome_fill_time/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
         hf="hfs/genome_fill_time/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.hf",
@@ -39,7 +39,7 @@ rule eval_fill_time_genome:
 rule prepare_bpht_access_time:
     input:
         bin=bin_name,
-        genome_path=lambda w: g[w.genome],
+        genome_path=lambda w: g[w.genome]["path"],
     output:
         stats="results/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
         hf="hfs/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.hf",
@@ -51,7 +51,7 @@ rule prepare_bpht_access_time:
 rule evaluate_bpht_access_time:
     input:
         bin=bin_name,
-        genome_path=lambda w: g[w.genome],
+        genome_path=lambda w: g[w.genome]["path"],
         hf="hfs/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.hf",
         bpht="hfs/genome_access_time/index/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.bpht",
     output:
