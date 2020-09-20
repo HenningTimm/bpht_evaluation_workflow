@@ -7,8 +7,7 @@ to a specific server with two numa blocks.
 Performance on other devices might differ.
 
 The hg38 and hop genomes evaluated are too big for this repository.
-They need to be downloaded seperately, placed in the genomes folder
-and added to genomes.tsv.
+They need to be downloaded on startup for server configurations.
 """
 import pandas as pd
 import socket
@@ -19,7 +18,7 @@ configfile: "config_desktop.yaml"
 # Server config requires: Processors with two seperate NUMA blocks, about 2 TB of free disk space and 128GB of RAM
 # configfile: "config_server.yaml"
 
-genomes = pd.read_csv("genomes.tsv", sep="\t", comment="#", dtype=str)
+genomes = pd.read_csv(config["genomes_file"], sep="\t", comment="#", dtype=str)
 g = {name: {"path": path, "download_link": download_link} for name, path, download_link in zip(genomes["name"], genomes["path"], genomes["download_link"])}
 print(g)
 

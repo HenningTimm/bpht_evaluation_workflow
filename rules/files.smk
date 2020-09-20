@@ -41,6 +41,7 @@ rule get_hops_genome:
     shell:
         "mkdir -p genomes && zcat {input} > {output}"
 
+# TODO refactor untared path
 rule get_human_genome:
     input:
         FTP.remote(

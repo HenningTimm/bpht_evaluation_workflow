@@ -1,7 +1,14 @@
 # paths to genome files.
 # Human genome and hops genome are not included in this repository
 # Download them and replace the respective lines in genomes.tsv
-genomes: genomes.tsv
+genomes_file: genomes.tsv
+
+# Genomes to evaluate
+target_genomes:
+  # - hg38
+  # - hops
+  - mxanthus
+  - pfalciparum
 
 # change this to a path to point local, fast memory wiuth lots of free space
 # for example an ssd
@@ -9,6 +16,8 @@ tmp_path: tmp
 # path to the evaluation software
 bpht_eval_path: bpht_eval
 
+numa_blocks:
+  - 0
 
 
 params:
@@ -31,7 +40,7 @@ fill_rate:
     - 14
     - 16
   runs:
-    2
+    4
   steps:
     10
 
@@ -45,7 +54,7 @@ genomes_fill_time:
     - mult
     - tab_twisted
   runs:
-    2
+    4
 
 genomes_access_time:
   q:
@@ -57,7 +66,7 @@ genomes_access_time:
     - mult
     - tab_twisted
   runs:
-    2
+    4
 
 
 comparison:
@@ -71,7 +80,7 @@ comparison:
     - 26
     - 22
   runs:
-    2
+    4
 
   
 new_comparison:
@@ -85,4 +94,4 @@ new_comparison:
     - 26
     - 22
   runs:
-    2
+    4

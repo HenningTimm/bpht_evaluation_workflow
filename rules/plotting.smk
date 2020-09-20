@@ -23,7 +23,7 @@ rule plot_all_genome_fill_times:
     input:
         stats=expand(
             "results/genome_fill_time/genome={genome}_H={H}_hf={hf}_q={q}_run={run}.csv",
-            genome=g.keys(),
+            genome=config["target_genomes"],
             H=config["genomes_fill_time"]["H"],
             hf=config["genomes_fill_time"]["hfs"],
             q=config["genomes_fill_time"]["q"],
@@ -52,7 +52,7 @@ rule plot_access_time_comparison:
             H=all_comparison_h,
             ),
                 run=range(config["comparison"]["runs"]),
-                numa=[0,1],
+                numa=config["numa_blocks"],
             )
     output:
         atc_pdf="plots/counting_access_time_comparison.pdf",
@@ -80,7 +80,7 @@ rule plot_new_access_time_comparison:
             H=all_new_comparison_h,
             ),
                 run=range(config["new_comparison"]["runs"]),
-                numa=[0,1],
+                numa=config["numa_blocks"],
             )
     output:
         atc_pdf="plots/normal_access_time_comparison.pdf",
