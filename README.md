@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4041213.svg)](https://doi.org/10.5281/zenodo.4041213)
+
 # BPHT Evaluation Workflow
 
 Evaluates the access and fill times of BPHTs compared to an implementation with a dedicated hop bit table.
